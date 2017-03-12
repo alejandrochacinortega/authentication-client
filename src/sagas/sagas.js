@@ -1,5 +1,4 @@
-import {takeEvery} from 'redux-saga';
-import {call, put} from 'redux-saga/effects';
+import {call, put, takeEvery} from 'redux-saga/effects';
 import {
     SIGN_IN,
     SIGN_IN_SUCCEED
@@ -12,7 +11,7 @@ function* signIn(action) {
 
     yield put({
         type: SIGN_IN_SUCCEED,
-        data: "sending from saga"
+        data: action.data
     })
 }
 

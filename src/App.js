@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { signin } from './actions/index';
+import Header from './components/Header';
 
 class App extends Component {
     render() {
         return (
             <div>
-                <button onClick={() => this.props.signin()}>Sign in</button>
+                <Header/>
             </div>
     );
     }
 }
 
-export default connect(null, { signin })(App);
+export default App;
