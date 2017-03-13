@@ -1,52 +1,61 @@
 import {call, put, takeEvery} from 'redux-saga/effects';
 import {
     SIGN_IN,
-    SIGN_IN_SUCCEED
+    SIGN_IN_SUCCEED,
+    SIGN_IN_FAIL,
+    AUTH_ERROR
 } from '../types/types';
 
 import axios from 'axios';
-console.log(' axios ', axios);
+import { browserHistory }  from 'react-router';
 
 const ROOT_URL = 'http://localhost:3090/signin';
 
 
 function* signIn(action) {
 
-    console.log(' saga action ', action);
-
     let data;
+    let type;
+    let error;
 
     yield call(function () {
+
         //Submit email/password
         return axios.post(`${ROOT_URL}`, {
-            "email": "omar_unique@gmail.com",
-            "password": "123"
+            email: action.data.email,
+            password: action.data.password
         })
             .then(response => {
-                data = response.data
-            }, function (error) {
-                console.log(' error ', error);
+                data = response.data;
+                error = false;
+                // If request is good...
+                // - Update state to indicate user is authenticated
+                type = SIGN_IN_SUCCEED;
+                // - Save JWT token
+                localStorage.setItem('token', response.data.token);
+                // - redirect to the route '/feature'
+                browserHistory.push('/feature');
+                
+            }, function (e) {
+                error = true;
+                console.log(' error ', e);
+                data = "Bad loging request";
+                type = AUTH_ERROR;
+                //If request is bad...
+                // - SHow an error to the user
             })
     });
 
-
-    // If request is good...
-    // - Update state to indicate user is authenticated
-    // - Save JWT token
-    // - redirect to the route '/feature'
-
-    //If request is bad...
-    // - SHow an error to the user
-
     yield put({
-        type: SIGN_IN_SUCCEED,
-        data: action.data
+        type,
+        data
     })
+
+
 }
 
 //Our watcher
 export function* watchSignin() {
-    console.log(' saga watching ');
     yield takeEvery(SIGN_IN, signIn)
 }
 

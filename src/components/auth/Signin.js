@@ -11,10 +11,11 @@ class Signin extends Component {
     }
 
     renderAlert() {
-        if (this.props.errorMessage) {
+        console.log(' rendering alert  ', this.props);
+        if (this.props.errorLogging) {
             return (
                 <div className="alert alert-danger">
-                    <strong>Oops!</strong> {this.props.errorMessage}
+                    <strong>Oops! Prease provide the right credentials</strong>
                 </div>
             );
         }
@@ -41,7 +42,7 @@ class Signin extends Component {
 }
 
 function mapStateToProps(state) {
-    return { errorMessage: state.auth.error };
+    return { errorLogging: state.auth.get('error') };
 }
 
 export default reduxForm({
