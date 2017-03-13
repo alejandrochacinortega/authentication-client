@@ -6,6 +6,10 @@ import { createStore, applyMiddleware } from 'redux';
 import reducers from './reducers';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from './sagas/sagas';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+
+
+import Signin from './components/auth/Signin';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -16,7 +20,11 @@ const store = createStore(
 
 ReactDOM.render(
     <Provider store={store}>
-        <App/>
+        <Router history={browserHistory}>
+            <Route path="/" component={App}>
+                <Route path="signin" component={Signin} />
+            </Route>
+        </Router>
     </Provider>,
     document.getElementById('root')
 );
