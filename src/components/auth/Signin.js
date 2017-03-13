@@ -5,9 +5,9 @@ import * as actions from '../../actions';
 class Signin extends Component {
     handleFormSubmit({ email, password }) {
         console.log(' email ', email);
-        console.log(' pass ', password);  
+        console.log(' pass ', password);
         // Need to do something to log user in
-        this.props.signin({ email, password });
+        this.props.signin(email, password);
     }
 
     renderAlert() {
