@@ -4,14 +4,11 @@ import * as actions from '../../actions';
 
 class Signin extends Component {
     handleFormSubmit({ email, password }) {
-        console.log(' email ', email);
-        console.log(' pass ', password);
         // Need to do something to log user in
         this.props.signin(email, password);
     }
 
     renderAlert() {
-        console.log(' rendering alert  ', this.props);
         if (this.props.errorLogging) {
             return (
                 <div className="alert alert-danger">
