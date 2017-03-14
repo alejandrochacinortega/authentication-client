@@ -4,3 +4,5 @@ export const SIGN_IN_FAIL = "SIGN_IN_FAIL";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const UNAUTH = "UNAUTH";
 export const UNAUTH_SUCCEED = "UNAUTH_SUCCEED";
+export const SIGN_UP= "SIGN_UP";
+export const SIGN_UP_SUCCEED= "SIGN_UP_SUCCEED";

@@ -2,16 +2,17 @@ import {call, put, takeEvery} from 'redux-saga/effects';
 import {
   SIGN_IN,
   SIGN_IN_SUCCEED,
-  SIGN_IN_FAIL,
   AUTH_ERROR,
   UNAUTH,
-  UNAUTH_SUCCEED
+  UNAUTH_SUCCEED,
+  SIGN_UP,
+  SIGN_UP_SUCCEED
 } from '../types/types';
 
 import axios from 'axios';
 import {browserHistory}  from 'react-router';
 
-const ROOT_URL = 'http://localhost:3090/signin';
+const ROOT_URL = 'http://localhost:3090';
 
 
 function* signIn(action) {
@@ -23,7 +24,7 @@ function* signIn(action) {
   yield call(function () {
 
     //Submit email/password
-    return axios.post(`${ROOT_URL}`, {
+    return axios.post(`${ROOT_URL}/signin`, {
       email: action.data.email,
       password: action.data.password
     })
@@ -59,11 +60,44 @@ function* signIn(action) {
 function* signOut(action) {
   console.log(' signing out from saga ', action);
 
-    localStorage.removeItem('token');
-    
-    yield put({
-        type: UNAUTH_SUCCEED,
+  localStorage.removeItem('token');
+
+  yield put({
+    type: UNAUTH_SUCCEED,
+  })
+}
+
+function* signup(action) {
+
+  let type;
+  let data;
+
+  yield call(function () {
+    return axios.post(`${ROOT_URL}/signup`, {
+      email: action.data.email,
+      password: action.data.password
     })
+      .then((response) => {
+        data = response.data;
+        type = SIGN_UP_SUCCEED;
+        localStorage.setItem('token', response.data.token);
+        browserHistory.push('/feature');
+
+      })
+      .catch(response => {
+        data = "unable to sign up";
+        type = AUTH_ERROR;
+      })
+
+  });
+
+  console.log(' data  ', data);
+
+
+  yield put({
+      type,
+      data
+  })
 }
 
 //Our watcher
@@ -75,11 +109,16 @@ export function* watchSignOut() {
   yield takeEvery(UNAUTH, signOut)
 }
 
+export function* watchSignup() {
+  yield takeEvery(SIGN_UP, signup)
+}
+
 //Our sagaroots
 export default function* rootSaga() {
   console.log(' saga root ');
   yield [
     watchSignin(),
-    watchSignOut()
+    watchSignOut(),
+    watchSignup()
   ]
 }

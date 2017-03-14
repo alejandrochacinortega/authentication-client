@@ -42,7 +42,6 @@ class Header extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log(' state.auth ', state.auth.toJS());
     return {
         authenticated: state.auth.get('authenticated')
     }

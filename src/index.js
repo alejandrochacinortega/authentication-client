@@ -10,6 +10,8 @@ import {Router, Route, IndexRoute, browserHistory} from 'react-router';
 
 import Signin from './components/auth/Signin';
 import Signout from './components/auth/Signout';
+import Signup from './components/auth/Signup';
+import Feature from './components/Feature';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -24,7 +26,8 @@ ReactDOM.render(
       <Route path="/" component={App}>
         <Route path="signin" component={Signin}/>
         <Route path="signout" component={Signout}/>
-
+        <Route path="signup" component={Signup}/>
+        <Route path="feature" component={Feature}/>
       </Route>
     </Router>
   </Provider>,

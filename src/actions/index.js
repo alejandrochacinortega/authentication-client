@@ -1,4 +1,8 @@
-import {SIGN_IN, UNAUTH} from '../types/types';
+import {
+  SIGN_IN,
+  UNAUTH,
+  SIGN_UP
+} from '../types/types';
 
 export function signin(email, password) {
   const data = {
@@ -14,5 +18,15 @@ export function signin(email, password) {
 export function signout() {
   return {
     type: UNAUTH,
+  }
+}
+
+export function signup({email, password}) {
+  return {
+    type: SIGN_UP,
+    data: {
+      email,
+      password
+    }
   }
 }
