@@ -1,7 +1,8 @@
 import {
   SIGN_IN,
   UNAUTH,
-  SIGN_UP
+  SIGN_UP,
+  FETCH_SECRET_DATA
 } from '../types/types';
 
 export function signin(email, password) {
@@ -28,5 +29,11 @@ export function signup({email, password}) {
       email,
       password
     }
+  }
+}
+
+export function fetchSecretData() {
+  return {
+    type: FETCH_SECRET_DATA,
   }
 }

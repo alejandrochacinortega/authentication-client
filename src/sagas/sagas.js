@@ -6,7 +6,9 @@ import {
   UNAUTH,
   UNAUTH_SUCCEED,
   SIGN_UP,
-  SIGN_UP_SUCCEED
+  SIGN_UP_SUCCEED,
+  FETCH_SECRET_DATA,
+  FETCH_SECRET_DATA_SUCCEED
 } from '../types/types';
 
 import axios from 'axios';
@@ -78,7 +80,7 @@ function* signup(action) {
       password: action.data.password
     })
       .then((response) => {
-        data = response.data;
+        data = response.data.message;
         type = SIGN_UP_SUCCEED;
         localStorage.setItem('token', response.data.token);
         browserHistory.push('/feature');
@@ -95,8 +97,39 @@ function* signup(action) {
 
 
   yield put({
-      type,
-      data
+    type,
+    data
+  })
+}
+
+function* fetchSecretData(action) {
+
+  const token = localStorage.getItem('token');
+  let data;
+  let type;
+
+  yield call(function () {
+    return axios.get(`${ROOT_URL}`, {
+      headers: {
+        authorization: token
+      }
+    })
+      .then(function (response) {
+        console.log(' data back ', response);
+        data = response.data;
+        type = FETCH_SECRET_DATA_SUCCEED;
+      })
+      .catch(function (error) {
+        data = "Error retrieving data";
+        type = AUTH_ERROR
+      })
+  })
+
+  
+  console.log(' type  ', type);
+  yield put({
+    type,
+    data
   })
 }
 
@@ -113,12 +146,19 @@ export function* watchSignup() {
   yield takeEvery(SIGN_UP, signup)
 }
 
+export function* watchFetchSecretData() {
+  yield takeEvery(FETCH_SECRET_DATA, fetchSecretData)
+}
+
 //Our sagaroots
 export default function* rootSaga() {
   console.log(' saga root ');
   yield [
     watchSignin(),
     watchSignOut(),
-    watchSignup()
+    watchSignup(),
+    watchFetchSecretData()
   ]
 }
+
+FETCH_SECRET_DATA
